@@ -14,7 +14,7 @@ import tensorflow as tf
 
 x = tf.random_uniform([])  # Empty array as shape creates a scalar.
 y = tf.random_uniform([])
-out_1 = tf.cond(tf.greater(x, y), lambda: tf.add(x, y), lambda: tf.subtract(x, y)) # tf.cond
+out_1 = tf.cond(tf.greater(x, y), lambda: x + y, lambda: x - y)  # tf.cond
 
 ###############################################################################
 # 1b: Create two 0-d tensors x and y randomly selected from the range [-1, 1).
@@ -24,11 +24,19 @@ out_1 = tf.cond(tf.greater(x, y), lambda: tf.add(x, y), lambda: tf.subtract(x, y
 
 x = tf.random_uniform([], -1, 1)
 y = tf.random_uniform([], -1, 1)
+# tf.case:
+#     If exclusive==True, all predicates are evaluated,
+#     and an exception is thrown if more than one of the
+#     predicates evaluates to True.
+#     If exclusive==False, execution stops are the first
+#     predicate which evaluates to True
+#
 out_2 = tf.case(
     [
         (tf.less(x, y), lambda: tf.add(x, y)),
         (tf.greater(x, y), lambda: tf.subtract(x, y))
-    ], default=lambda: tf.constant(0.0)
+    ], default=lambda: tf.constant(0.0),
+    exclusive=False
 )  # tf.case([(condi, func)], default=func)
 
 
@@ -41,7 +49,7 @@ out_2 = tf.case(
 
 x = tf.Variable([[0, -2, -1], [0, 1, 2]], dtype=tf.float32)
 y = tf.zeros_like(x)  # tf.zeros_like
-out_3 = tf.equal(x, y)
+out_3 = tf.equal(x, y)  # a boolean tensor
 
 ###############################################################################
 # 1d: Create the tensor x of value 
@@ -66,8 +74,8 @@ x = tf.Variable(
     ]
 )
 
-out_4_a = tf.where(tf.greater(x, tf.constant(30.0)))
-out_4_b = tf.gather(x, out_4_a)
+indices = tf.where(tf.greater(x, tf.constant(30.0)))
+out_4_b = tf.gather(x, indices)  # gather x through indices
 
 ###############################################################################
 # 1e: Create a diagnoal 2-d tensor of size 6 x 6 with the diagonal values of 1,
@@ -75,7 +83,7 @@ out_4_b = tf.gather(x, out_4_a)
 # Hint: Use tf.range() and tf.diag().
 ###############################################################################
 
-out_5 = tf.diag(tf.range(2, 7))
+out_5 = tf.diag(tf.range(1, 7))  # tf.rang(a, b) [a, b)
 
 ###############################################################################
 # 1f: Create a random 2-d tensor of size 10 x 10 from any distribution.
@@ -91,7 +99,7 @@ out_6 = tf.matrix_determinant(tf.random_normal((10, 10)))
 # Hint: use tf.unique(). Keep in mind that tf.unique() returns a tuple.
 ###############################################################################
 
-out_7_a, out_7_b = tf.unique(tf.Variable([5, 2, 3, 5, 10, 6, 2, 3, 4, 2, 1, 1, 0, 9]))
+uni_val, uni_idx = tf.unique(tf.Variable([5, 2, 3, 5, 10, 6, 2, 3, 4, 2, 1, 1, 0, 9]))
 
 ###############################################################################
 # 1h: Create two tensors x and y of shape 300 from any normal distribution,
