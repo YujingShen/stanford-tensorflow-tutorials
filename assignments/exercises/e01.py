@@ -14,7 +14,7 @@ import tensorflow as tf
 
 x = tf.random_uniform([])  # Empty array as shape creates a scalar.
 y = tf.random_uniform([])
-out = tf.cond(tf.greater(x, y), lambda: tf.add(x, y), lambda: tf.subtract(x, y)) # tf.cond
+out_1 = tf.cond(tf.greater(x, y), lambda: tf.add(x, y), lambda: tf.subtract(x, y)) # tf.cond
 
 ###############################################################################
 # 1b: Create two 0-d tensors x and y randomly selected from the range [-1, 1).
@@ -22,7 +22,15 @@ out = tf.cond(tf.greater(x, y), lambda: tf.add(x, y), lambda: tf.subtract(x, y))
 # Hint: Look up tf.case().
 ###############################################################################
 
-# YOUR CODE
+x = tf.random_uniform([], -1, 1)
+y = tf.random_uniform([], -1, 1)
+out_2 = tf.case(
+    [
+        (tf.less(x, y), lambda: tf.add(x, y)),
+        (tf.greater(x, y), lambda: tf.subtract(x, y))
+    ], default=lambda: tf.constant(0.0)
+)  # tf.case([(condi, func)], default=func)
+
 
 ###############################################################################
 # 1c: Create the tensor x of the value [[0, -2, -1], [0, 1, 2]] 
@@ -31,7 +39,9 @@ out = tf.cond(tf.greater(x, y), lambda: tf.add(x, y), lambda: tf.subtract(x, y))
 # Hint: Look up tf.equal().
 ###############################################################################
 
-# YOUR CODE
+x = tf.Variable([[0, -2, -1], [0, 1, 2]], dtype=tf.float32)
+y = tf.zeros_like(x)  # tf.zeros_like
+out_3 = tf.equal(x, y)
 
 ###############################################################################
 # 1d: Create the tensor x of value 
