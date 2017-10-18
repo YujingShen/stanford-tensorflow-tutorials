@@ -56,7 +56,18 @@ out_3 = tf.equal(x, y)
 # Hint: Use tf.gather().
 ###############################################################################
 
-# YOUR CODE
+x = tf.Variable(
+    [
+        29.05088806,  27.61298943,  31.19073486,  29.35532951,
+        30.97266006,  26.67541885,  38.08450317,  20.74983215,
+        34.94445419,  34.45999146,  29.06485367,  36.01657104,
+        27.88236427,  20.56035233,  30.20379066,  29.51215172,
+        33.71149445,  28.59134293,  36.05556488,  28.66994858
+    ]
+)
+
+out_4_a = tf.where(tf.greater(x, tf.constant(30.0)))
+out_4_b = tf.gather(x, out_4_a)
 
 ###############################################################################
 # 1e: Create a diagnoal 2-d tensor of size 6 x 6 with the diagonal values of 1,
@@ -64,7 +75,7 @@ out_3 = tf.equal(x, y)
 # Hint: Use tf.range() and tf.diag().
 ###############################################################################
 
-# YOUR CODE
+out_5 = tf.diag(tf.range(2, 7))
 
 ###############################################################################
 # 1f: Create a random 2-d tensor of size 10 x 10 from any distribution.
@@ -72,7 +83,7 @@ out_3 = tf.equal(x, y)
 # Hint: Look at tf.matrix_determinant().
 ###############################################################################
 
-# YOUR CODE
+out_6 = tf.matrix_determinant(tf.random_normal((10, 10)))
 
 ###############################################################################
 # 1g: Create tensor x with value [5, 2, 3, 5, 10, 6, 2, 3, 4, 2, 1, 1, 0, 9].
@@ -80,7 +91,7 @@ out_3 = tf.equal(x, y)
 # Hint: use tf.unique(). Keep in mind that tf.unique() returns a tuple.
 ###############################################################################
 
-# YOUR CODE
+out_7_a, out_7_b = tf.unique(tf.Variable([5, 2, 3, 5, 10, 6, 2, 3, 4, 2, 1, 1, 0, 9]))
 
 ###############################################################################
 # 1h: Create two tensors x and y of shape 300 from any normal distribution,
@@ -92,4 +103,10 @@ out_3 = tf.equal(x, y)
 # Hint: see the Huber loss function in the lecture slides 3.
 ###############################################################################
 
-# YOUR CODE
+x = tf.random_normal([300])
+y = tf.random_normal([300])
+out_8 = tf.cond(
+    tf.less(tf.reduce_mean(x - y), tf.constant(0.0)),
+    lambda: tf.reduce_mean(tf.square(x - y)),
+    lambda: tf.reduce_sum(tf.abs(x - y))
+)
