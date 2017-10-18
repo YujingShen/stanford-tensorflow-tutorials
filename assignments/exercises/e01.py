@@ -14,7 +14,7 @@ import tensorflow as tf
 
 x = tf.random_uniform([])  # Empty array as shape creates a scalar.
 y = tf.random_uniform([])
-out_1 = tf.cond(tf.greater(x, y), lambda: x + y, lambda: x - y)  # tf.cond
+out_1 = tf.cond(tf.greater(x, y), lambda: tf.add(x, y), lambda: tf.substr(x, y))  # tf.cond
 
 ###############################################################################
 # 1b: Create two 0-d tensors x and y randomly selected from the range [-1, 1).
@@ -51,6 +51,8 @@ x = tf.Variable([[0, -2, -1], [0, 1, 2]], dtype=tf.float32)
 y = tf.zeros_like(x)  # tf.zeros_like
 out_3 = tf.equal(x, y)  # a boolean tensor
 
+# tf.zeros_like ~ tf.fill(shape, value)
+
 ###############################################################################
 # 1d: Create the tensor x of value 
 # [29.05088806,  27.61298943,  31.19073486,  29.35532951,
@@ -85,13 +87,16 @@ out_4_b = tf.gather(x, indices)  # gather x through indices
 
 out_5 = tf.diag(tf.range(1, 7))  # tf.rang(a, b) [a, b)
 
+# another tf.linsapce
+
 ###############################################################################
 # 1f: Create a random 2-d tensor of size 10 x 10 from any distribution.
 # Calculate its determinant.
 # Hint: Look at tf.matrix_determinant().
 ###############################################################################
 
-out_6 = tf.matrix_determinant(tf.random_normal((10, 10)))
+out_6 = tf.matrix_determinant(tf.truncated_normal((10, 10)))
+# truncated_normal are more common
 
 ###############################################################################
 # 1g: Create tensor x with value [5, 2, 3, 5, 10, 6, 2, 3, 4, 2, 1, 1, 0, 9].
